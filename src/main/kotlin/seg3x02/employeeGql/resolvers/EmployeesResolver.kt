@@ -8,16 +8,16 @@ import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 import seg3x02.employeeGql.entity.Employee
-import seg3x02.employeeGql.repository.EmployeeRepository
+import seg3x02.employeeGql.repository.EmployeesRepository
 import seg3x02.employeeGql.resolvers.types.CreateEmployeeInput
 
 @Controller
 class EmployeesResolver(val mongoOperations: MongoOperations,
-                        private val employeeRepository: EmployeeRepository
+                        private val employeesRepository: EmployeesRepository
 ) {
     @QueryMapping
     fun employees(): List<Employee> {
-        return employeeRepository.findAll()
+        return employeesRepository.findAll()
     }
 
 
@@ -25,7 +25,7 @@ class EmployeesResolver(val mongoOperations: MongoOperations,
     @MutationMapping
     fun newEmployee(@Argument("createEmployeeInput") input: CreateEmployeeInput) : Employee {
         val employee = Employee(input.name, input.dateOfBirth, input.city, input.salary, input.gender, input.email)
-        employeeRepository.save(employee)
+        employeesRepository.save(employee)
         return employee
     }
 }
